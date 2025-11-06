@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/api/",
     },
-    sitemap: "https://your-domain.com/sitemap.xml",
+    sitemap: "https://restroworks-flame.vercel.app/sitemap.xml",
   };
 }

@@ -27,7 +27,7 @@ export default buildConfig({
     defaultLocale: 'en',
     fallback: true,
   },
-  cors: ['http://localhost:3000', 'https://your-frontend-domain.com'],
+  cors: ['http://localhost:3000', 'https://restroworks-flame.vercel.app'],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
