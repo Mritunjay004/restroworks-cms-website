@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'title',
   },
