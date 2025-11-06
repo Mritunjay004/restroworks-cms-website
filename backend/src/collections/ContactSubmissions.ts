@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 const ContactSubmissions: CollectionConfig = {
   slug: 'contact-submissions',
+  access: {
+    create: () => true,
+    read: ({ req: { user } }) => !!user,
+  },
   admin: {
     useAsTitle: 'email',
   },
