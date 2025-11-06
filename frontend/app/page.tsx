@@ -1,23 +1,42 @@
-import { getPage } from "@/lib/api";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import BlockRenderer from "@/components/BlockRenderer";
-import { Metadata } from "next";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPage("home");
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
-  return {
-    title: page?.seo?.title || "Home",
-    description: page?.seo?.description || "",
-    openGraph: {
-      title: page?.seo?.title || "Home",
-      description: page?.seo?.description || "",
-      images: page?.seo?.image?.url ? [page.seo.image.url] : [],
-    },
-  };
-}
+export default function Home() {
+  const { language } = useLanguage();
+  const [page, setPage] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function Home() {
-  const page = await getPage("home");
+  useEffect(() => {
+    async function fetchPage() {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `${API_URL}/pages?where[slug][equals]=home&locale=${language}`
+        );
+        const data = await response.json();
+        setPage(data.docs[0] || null);
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPage();
+  }, [language]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   if (!page) {
     return <div>Page not found</div>;

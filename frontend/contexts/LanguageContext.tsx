@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface LanguageContextType {
   language: string;
@@ -14,6 +20,23 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState("en");
+  const [mounted, setMounted] = useState(false);
+
+  // Loading saved language on mount
+  useEffect(() => {
+    setMounted(true);
+    const savedLang = localStorage.getItem("language");
+    if (savedLang) {
+      setLanguage(savedLang);
+    }
+  }, []);
+
+  // Saving language when it changes
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("language", language);
+    }
+  }, [language, mounted]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>
